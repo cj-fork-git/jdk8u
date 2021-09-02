@@ -62,11 +62,26 @@ class ThreadGroup implements Thread.UncaughtExceptionHandler {
     boolean daemon;
     boolean vmAllowSuspension;
 
+    /**
+     * 未调用start方法的线程数量
+     */
     int nUnstartedThreads = 0;
+    /**
+     * start方法成功后的线程数量，start方法调用失败，仍然统计在nUnstartedThreads数据统计中
+     */
     int nthreads;
+    /**
+     * start方法成功后的线程数组
+     */
     Thread threads[];
 
+    /**
+     * 子线程组ThreadGroup组的数量统计
+     */
     int ngroups;
+    /**
+     * 子线程组数据
+     */
     ThreadGroup groups[];
 
     /**
@@ -338,7 +353,9 @@ class ThreadGroup implements Thread.UncaughtExceptionHandler {
         // Snapshot sub-group data so we don't hold this lock
         // while our children are computing.
         int ngroupsSnapshot;
+        //子ThreadGroup的快照版本
         ThreadGroup[] groupsSnapshot;
+        //ThreadGroup分层上锁策略，基于树的某一层上锁
         synchronized (this) {
             if (destroyed) {
                 return 0;
@@ -352,6 +369,7 @@ class ThreadGroup implements Thread.UncaughtExceptionHandler {
             }
         }
         for (int i = 0 ; i < ngroupsSnapshot ; i++) {
+            //同步块外统计子ThreadGroup活跃线程数量
             result += groupsSnapshot[i].activeCount();
         }
         return result;
@@ -891,6 +909,7 @@ class ThreadGroup implements Thread.UncaughtExceptionHandler {
             if (threads == null) {
                 threads = new Thread[4];
             } else if (nthreads == threads.length) {
+                //数组扩容
                 threads = Arrays.copyOf(threads, nthreads * 2);
             }
             threads[nthreads] = t;
