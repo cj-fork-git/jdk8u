@@ -1952,6 +1952,7 @@ class Thread implements Runnable {
     }
 
     /**
+     * 该方法仅被JVM使用，用于分发线程中的异常
      * Dispatch an uncaught exception to the handler. This method is
      * intended to be called only by the JVM.
      */
