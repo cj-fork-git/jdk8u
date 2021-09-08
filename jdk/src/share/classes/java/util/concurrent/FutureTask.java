@@ -465,6 +465,7 @@ public class FutureTask<V> implements RunnableFuture<V> {
 
     // Unsafe mechanics
     private static final sun.misc.Unsafe UNSAFE;
+    //该类中的所有对象的state字段的偏移地址都相同,所以可以用static修饰
     private static final long stateOffset;
     private static final long runnerOffset;
     private static final long waitersOffset;
