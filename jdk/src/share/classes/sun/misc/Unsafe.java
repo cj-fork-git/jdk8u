@@ -85,6 +85,7 @@ public final class Unsafe {
      */
     @CallerSensitive
     public static Unsafe getUnsafe() {
+        //反射机制获取调用该方法的所在类
         Class<?> caller = Reflection.getCallerClass();
         // 仅在引导类加载器`BootstrapClassLoader`加载时才合法
         if (!VM.isSystemDomainLoader(caller.getClassLoader()))
@@ -183,6 +184,7 @@ public final class Unsafe {
     public native Object getObject(Object o, long offset);
 
     /**
+     * 指定对象指定偏移量对应的变量存储值
      * Stores a reference value into a given Java variable.
      * <p>
      * Unless the reference <code>x</code> being stored is either null
